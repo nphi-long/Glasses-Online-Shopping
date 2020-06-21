@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:fragment="accountLayout(meta, title, static, article, js)">
+<head>
+    <th:block th:replace="${meta} ?: ~{}"></th:block>
+    <title th:replace="${title}">Account Layout</title>
+    <th:block th:replace="${static} ?: ~{}"></th:block>
+</head>
+<body class="bg-gradient-primary">
+<div class="container">
+    <th:block th:replace="${article} ?: ~{}"></th:block>
+</div>
+<th:block th:replace="${js} ?: ~{}"></th:block>
+
+</body>
+</html>

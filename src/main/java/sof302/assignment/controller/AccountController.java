@@ -1,0 +1,86 @@
+package sof302.assignment.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import sof302.assignment.entities.User;
+import sof302.assignment.service.IUserService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+@Controller
+public class AccountController {
+    private static final String CLIENT_ROLE = "C";
+    @Autowired
+    IUserService userService;
+
+    @RequestMapping("/logout")
+    public String logoutAction(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+        return "redirect:/home";
+    }
+
+    //Login
+    @GetMapping(value = {"/login"})
+    public String returnLoginPage(ModelMap model, HttpSession session) {
+        if (session.getAttribute("user") != null)
+            return "redirect:/home";
+        else {
+            model.addAttribute("user", new User());
+            return "Login";
+        }
+    }
+
+    @PostMapping("/login")
+    public String loginAction(@ModelAttribute User user, HttpSession session) {
+        String username = user.getUsername();
+        String password = user.getPassword();
+        User userFinded = userService.findByUsernameAndPassword(username, password);
+        if (userFinded == null) {
+            return "redirect:/login";
+        } else {
+            session.setAttribute("user", userFinded);
+            if (userFinded.getRole().equals("A"))
+                return "redirect:/admin";
+            else
+                return "redirect:/home";
+        }
+    }
+    // End Login
+
+    // Register
+    @GetMapping(value = "/register")
+    public String returnRegisterPage(ModelMap model, HttpSession session) {
+        if (session.getAttribute("user") != null)
+            return "redirect:/home";
+        else {
+            model.addAttribute("user", new User());
+            return "Register";
+        }
+    }
+    @PostMapping("/register")
+    public String registerAction(@ModelAttribute User user, RedirectAttributes attributes){
+       User checkDuplicateUser = userService.findByUsername(user.getUsername());
+       if(!user.getPassword().equals(user.getRepeatpassword())){
+           attributes.addFlashAttribute("notification", "Password is not Correct");
+           return "redirect:/register";
+       }
+       if(checkDuplicateUser == null){
+           userService.saveOrUpdate(user);
+           attributes.addFlashAttribute("notification", "Register successfully!");
+           return "redirect:/home";
+       }
+        else{
+            attributes.addFlashAttribute("notification", "Sorry! Account may have been registered by someone else");
+            return "redirect:/register";
+       }
+    }
+    //End Register
+}

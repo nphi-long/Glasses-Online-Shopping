@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:fragment="mainlayout(title, static, header,category, slider, article, footer, js)">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="${title}"></title>
+    <th:block th:replace="${static} ?: ~{}"></th:block>
+</head>
+<body>
+<th:block th:replace="${header} ?: ~{}"></th:block>
+<div class="container">
+    <div class="row">
+        <th:block th:replace="${category} ?: ~{}"></th:block>
+        <div class="col-lg-9">
+            <th:block th:replace="${slider} ?: ~{}"></th:block>
+            <th:block th:replace="${article} ?: ~{}"></th:block>
+        </div>
+    </div>
+</div>
+<footer th:replace="${footer} ?: ~{}"></footer>
+<th:block th:replace="${js} ?: ~{}"></th:block>
+</body>
+</html>
