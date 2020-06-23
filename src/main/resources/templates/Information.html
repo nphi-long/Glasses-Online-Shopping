@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/AccountLayout :: accountLayout(
+    ~{fragments/AccountFragment :: meta},
+    ~{:: title},
+    ~{fragments/AccountFragment :: static},
+    ~{:: article},
+    ~{fragments/AccountFragment :: js})}">
+<head>
+    <title>Information</title>
+</head>
+<body>
+<th:block th:fragment="article">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                <div class="col-lg-7">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Update your Information!</h1>
+                        </div>
+                        <form class="user" th:action="@{/information}" method="POST" th:object="${user}">
+                            <input type="hidden" th:field="*{uid}">
+                            <input type="hidden" th:field="*{username}">
+                            <input type="hidden" th:field="*{password}">
+                            <input type="hidden" th:field="*{role}">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" placeholder="Name" th:field="*{name}">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" placeholder="Phone" th:field="*{phone}">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" placeholder="Address" th:field="*{address}">
+                            </div>
+                            <div class="form-group" style="text-align: center">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="M" th:field="*{gender}">
+                                    <label class="form-check-label" for="inlineRadio1">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="F" th:field="*{gender}">
+                                    <label class="form-check-label" for="inlineRadio2">Female</label>
+                                </div>
+                            </div>
+                            <button name="register" class="btn btn-primary btn-user btn-block">Update</button>
+                        </form>
+                        <hr>
+                        <div class="text-center">
+                            <a class="small" th:href="@{/home}"><i class="fas fa-arrow-right"></i> Go back to our HomePage</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

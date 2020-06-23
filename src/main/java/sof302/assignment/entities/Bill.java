@@ -22,7 +22,7 @@ public class Bill implements Serializable {
     @JoinColumn(name = "uid")
     private User user;
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "MM/dd/yyyy")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date date;
     private String status;
     @ManyToMany(cascade = CascadeType.ALL)

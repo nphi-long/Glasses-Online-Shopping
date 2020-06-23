@@ -3,12 +3,10 @@ package sof302.assignment.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sof302.assignment.entities.User;
+import sof302.assignment.consts.Role;
 import sof302.assignment.service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,21 +64,39 @@ public class AccountController {
         }
     }
     @PostMapping("/register")
-    public String registerAction(@ModelAttribute User user, RedirectAttributes attributes){
+    public String registerAction(@ModelAttribute User user, RedirectAttributes attributes, HttpSession session){
        User checkDuplicateUser = userService.findByUsername(user.getUsername());
        if(!user.getPassword().equals(user.getRepeatpassword())){
            attributes.addFlashAttribute("notification", "Password is not Correct");
            return "redirect:/register";
        }
        if(checkDuplicateUser == null){
+           user.setRole(Role.Client);
            userService.saveOrUpdate(user);
+           session.setAttribute("user", user);
            attributes.addFlashAttribute("notification", "Register successfully!");
-           return "redirect:/home";
+           return "redirect:/information";
        }
         else{
             attributes.addFlashAttribute("notification", "Sorry! Account may have been registered by someone else");
             return "redirect:/register";
        }
     }
-    //End Register
+    // End Register
+
+    // Update Information
+    @GetMapping("/information")
+    public String returnInformationPage(HttpSession session, ModelMap model){
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        return "Information";
+    }
+
+    @PostMapping("/information")
+    public String updateInformation(@ModelAttribute User user, HttpSession session){
+        userService.saveOrUpdate(user);
+        session.setAttribute("user", user);
+        return "redirect:/home";
+    }
+    // End Update Information
 }

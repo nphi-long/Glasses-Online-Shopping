@@ -21,6 +21,7 @@ public class Product implements Serializable {
     private Float price;
     private Integer quantity;
     private String image;
+    private String description;
     @ManyToMany(cascade = CascadeType.ALL,
             mappedBy = "products")
     Collection<Bill> bills;
