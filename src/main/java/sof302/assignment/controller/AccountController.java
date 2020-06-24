@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import sof302.assignment.entities.Bill;
 import sof302.assignment.entities.User;
 import sof302.assignment.consts.Role;
+import sof302.assignment.service.IBillService;
 import sof302.assignment.service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,8 @@ public class AccountController {
     private static final String CLIENT_ROLE = "C";
     @Autowired
     IUserService userService;
+    @Autowired
+    IBillService billService;
 
     @RequestMapping("/logout")
     public String logoutAction(HttpServletRequest request) {
@@ -47,8 +51,9 @@ public class AccountController {
             session.setAttribute("user", userFinded);
             if (userFinded.getRole().equals("A"))
                 return "redirect:/admin";
-            else
+            else{
                 return "redirect:/home";
+            }
         }
     }
     // End Login
@@ -74,7 +79,6 @@ public class AccountController {
            user.setRole(Role.Client);
            userService.saveOrUpdate(user);
            session.setAttribute("user", user);
-           attributes.addFlashAttribute("notification", "Register successfully!");
            return "redirect:/information";
        }
         else{

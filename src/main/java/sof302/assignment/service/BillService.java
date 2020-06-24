@@ -2,7 +2,11 @@ package sof302.assignment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sof302.assignment.entities.Bill;
+import sof302.assignment.entities.Product;
 import sof302.assignment.repository.IBillRepository;
+
+import java.util.List;
 
 @Service
 public class BillService implements IBillService{
@@ -10,7 +14,12 @@ public class BillService implements IBillService{
     IBillRepository billRepo;
 
     @Override
-    public void deleteUserDontLoginBill() {
-        billRepo.deleteBill();
+    public Bill findUserBillUnpaid(Integer uid, String status) {
+        return billRepo.findByUserUidAndStatusEquals(uid,status);
+    }
+
+    @Override
+    public void saveOrUpdate(Bill bill) {
+        billRepo.save(bill);
     }
 }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/MainLayout :: mainlayout(
+        ~{:: title},
+        ~{fragments/MainFragment :: static},
+        ~{fragments/MainFragment :: mainHeader},
+	    ~{fragments/MainFragment :: category},
+	    ~{fragments/MainFragment :: slider},
+	    ~{:: pageArticle},
+	    ~{fragments/MainFragment :: footer},
+	    ~{fragments/MainFragment :: js}
+        )}">
+<head>
+    <title>Cart</title>
+</head>
+<body>
+<th:block th:fragment="pageArticle">
+    <h1>My Cart</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Image</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bill, count : ${bill}">
+            <th scope="row" th:text="${count}">1</th>
+            <td th:text="{bill.products}">Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+        </tr>
+        </tbody>
+    </table>
+</th:block>
+</body>
+</html>
