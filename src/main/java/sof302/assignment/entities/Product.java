@@ -18,7 +18,7 @@ public class Product implements Serializable {
     private Integer pid;
     private String name;
     private String type;
-    private Float price;
+    private Double price;
     private Integer quantity;
     private String image;
     private String description;

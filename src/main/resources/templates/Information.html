@@ -22,7 +22,6 @@
                             <h1 class="h4 text-gray-900 mb-4">Update your Information!</h1>
                         </div>
                         <form class="user" th:action="@{/information}" method="POST" th:object="${user}">
-                            <input type="hidden" th:field="*{uid}">
                             <input type="hidden" th:field="*{username}">
                             <input type="hidden" th:field="*{password}">
                             <input type="hidden" th:field="*{role}">

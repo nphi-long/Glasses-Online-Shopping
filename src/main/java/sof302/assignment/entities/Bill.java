@@ -19,12 +19,11 @@ public class Bill implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bid;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "uid")
+    @JoinColumn(name = "username")
     private User user;
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date date;
-    private String status;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "billdetails",
             joinColumns = @JoinColumn(name = "bid"),

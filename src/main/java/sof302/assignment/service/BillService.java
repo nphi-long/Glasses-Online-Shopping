@@ -14,11 +14,6 @@ public class BillService implements IBillService{
     IBillRepository billRepo;
 
     @Override
-    public Bill findUserBillUnpaid(Integer uid, String status) {
-        return billRepo.findByUserUidAndStatusEquals(uid,status);
-    }
-
-    @Override
     public void saveOrUpdate(Bill bill) {
         billRepo.save(bill);
     }

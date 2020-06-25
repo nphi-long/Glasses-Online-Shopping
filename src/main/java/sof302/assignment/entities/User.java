@@ -14,17 +14,14 @@ import java.util.Collection;
 @AllArgsConstructor
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer uid;
-    @Column(unique = true)
     private String username;
     private String password;
     private transient String repeatpassword;
     private String role;
     private String name;
+    private String gender;
     private String phone;
     private String address;
-    private String gender;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<Bill> bills;
 }

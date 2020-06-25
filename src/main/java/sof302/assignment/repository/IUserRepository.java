@@ -7,7 +7,6 @@ import sof302.assignment.entities.User;
 import java.util.List;
 
 @Repository
-public interface IUserRepository extends JpaRepository<User, Integer> {
+public interface IUserRepository extends JpaRepository<User, String> {
     User findByUsernameAndPassword(String username, String password);
-    User findByUsername(String username);
 }

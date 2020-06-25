@@ -16,22 +16,23 @@
 <body>
 <th:block th:fragment="pageArticle">
     <h1>My Cart</h1>
-    <table class="table table-hover">
+    <table class="table table-hover" style="text-align: center">
         <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Image</th>
-            <th scope="col">Price</th>
             <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="bill, count : ${bill}">
-            <th scope="row" th:text="${count}">1</th>
-            <td th:text="{bill.products}">Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+        <tr th:each="cart, state : ${session.cart}">
+            <td scope="row" th:text="${state.count}">1</td>
+            <td th:text="${cart.product.name}">Mark</td>
+            <td th:text="${cart.product.image}">Mark</td>
+            <td th:text="${cart.quantity}">Mark</td>
+            <td th:text="${cart.product.price*cart.quantity}">Mark</td>
         </tr>
         </tbody>
     </table>

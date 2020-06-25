@@ -11,5 +11,4 @@ import java.util.List;
 
 @Repository
 public interface IBillRepository extends JpaRepository<Bill, Integer> {
-    Bill findByUserUidAndStatusEquals(Integer uid, String status);
 }

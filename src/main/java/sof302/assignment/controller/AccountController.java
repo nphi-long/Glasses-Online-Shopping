@@ -70,7 +70,7 @@ public class AccountController {
     }
     @PostMapping("/register")
     public String registerAction(@ModelAttribute User user, RedirectAttributes attributes, HttpSession session){
-       User checkDuplicateUser = userService.findByUsername(user.getUsername());
+       User checkDuplicateUser = userService.findById(user.getUsername());
        if(!user.getPassword().equals(user.getRepeatpassword())){
            attributes.addFlashAttribute("notification", "Password is not Correct");
            return "redirect:/register";

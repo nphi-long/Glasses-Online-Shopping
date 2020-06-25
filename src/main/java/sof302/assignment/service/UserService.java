@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import sof302.assignment.entities.User;
 import sof302.assignment.repository.IUserRepository;
 
+import java.util.Optional;
+
 @Service
 public class UserService implements IUserService{
     @Autowired
@@ -16,8 +18,13 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepo.findByUsername(username);
+    public User findById(String username) {
+        Optional<User> user = userRepo.findById(username);
+        if(user.isPresent()){
+            User userOut = user.get();
+            return userOut;
+        }
+        return null;
     }
 
     @Override
