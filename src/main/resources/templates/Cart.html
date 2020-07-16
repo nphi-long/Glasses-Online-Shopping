@@ -24,17 +24,33 @@
             <th scope="col">Image</th>
             <th scope="col">Quantity</th>
             <th scope="col">Price</th>
+            <th></th>
         </tr>
         </thead>
-        <tbody>
-        <tr th:each="cart, state : ${session.cart}">
-            <td scope="row" th:text="${state.count}">1</td>
-            <td th:text="${cart.product.name}">Mark</td>
-            <td th:text="${cart.product.image}">Mark</td>
-            <td th:text="${cart.quantity}">Mark</td>
-            <td th:text="${cart.product.price*cart.quantity}">Mark</td>
+        <th:block th:if="${session.cart}" th:with="tong = 0">
+            <tbody>
+            <tr th:each="cart, state : ${session.cart}">
+                <td scope="row" th:text="${state.count}">1</td>
+                <td th:text="${cart.product.name}">Mark</td>
+                <td th:text="${cart.product.image}">Mark</td>
+                <td th:text="${cart.quantity}">Mark</td>
+                <td th:text="'$'+${cart.product.price*cart.quantity}">Mark</td>
+                <td><a class="btn btn-block btn-primary" th:href="@{'/removecart/'+${cart.product.pid}}">Remove</a></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th colspan="5">Tổng</th>
+                <th th:text="'$'+${tongTien}"></th>
+            </tr>
+            </tfoot>
+        </th:block>
+        <tfoot th:unless="${session.cart}">
+        <tr>
+            <th colspan="5">Tổng</th>
+            <th>$0.0</th>
         </tr>
-        </tbody>
+        </tfoot>
     </table>
 </th:block>
 </body>

@@ -5,10 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import sof302.assignment.entities.Product;
-import sof302.assignment.entities.User;
 import sof302.assignment.service.IProductService;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -24,8 +22,10 @@ public class HomeController {
     }
 
     @GetMapping(value = {"/admin"})
-    public String returnAdminPage() {
-        return "Admin";
+    public String returnAdminPage(ModelMap model) {
+        List<Product> productList = proService.findAll();
+        model.addAttribute("productList", productList);
+        return "Admin/AdminIndex";
     }
 
     @GetMapping(value = {"/notfound"})

@@ -20,4 +20,9 @@ public class ProductService implements IProductService{
     public Product findById(Integer id) {
         return productRepo.findById(id).get();
     }
+
+    @Override
+    public void deleteProductById(Integer id) {
+        productRepo.deleteById(id);
+    }
 }

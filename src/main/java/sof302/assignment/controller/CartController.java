@@ -29,12 +29,20 @@ public class CartController {
 
     // Add to cart
     @GetMapping("/cart")
-    public String returnCartPage() {
+    public String returnCartPage(HttpSession session, ModelMap model) {
+        List<Cart> cartList = (List<Cart>) session.getAttribute("cart");
+        double tongTien = 0;
+        if (cartList != null) {
+            for (Cart cart1 : cartList) {
+                tongTien += cart1.getProduct().getPrice() * cart1.getQuantity();
+            }
+        }
+        model.addAttribute("tongTien", tongTien);
         return "Cart";
     }
 
     @GetMapping("/addtocart/{id}")
-    public String AddToCartProduct(@PathVariable("id") Integer id, HttpSession session) {
+    public String AddToCartProduct(@PathVariable("id") Integer id, HttpSession session, ModelMap model) {
         User user = (User) session.getAttribute("user"); // Get Current User
         if (user == null) // If user is not logged in
             return "redirect:/login"; // => Redirect "/login"
@@ -64,5 +72,34 @@ public class CartController {
             session.setAttribute("cart", cartList);
             return "redirect:/home";
         }
+    }
+    // /Add To Cart
+
+    // Remove product form Cart
+    @GetMapping("/removecart/{id}")
+    public String removeProductFromCart(@PathVariable("id") Integer id, HttpSession session, ModelMap model) {
+        List<Cart> cartList = (List<Cart>) session.getAttribute("cart");
+        Cart cartConcurrentModification = null;
+        for (Cart cart : cartList) {
+            if (cart.getProduct().getPid() == id) {
+                if (cart.getQuantity() > 1) {
+                    cart.setQuantity(cart.getQuantity() - 1);
+                } else { // Xóa luôn thì sẽ bị ConcurrentModification Exception
+                    cartConcurrentModification = cart;
+                }
+            }
+        }
+        if (cartConcurrentModification != null) {
+            cartList.remove(cartConcurrentModification);
+            if (cartList == null)
+                session.removeAttribute("cart");
+        }
+        session.setAttribute("cart", cartList);
+        double tongTien = 0;
+        for (Cart cart : cartList) {
+            tongTien += cart.getProduct().getPrice() * cart.getQuantity();
+        }
+        model.addAttribute("tongTien", tongTien);
+        return "Cart";
     }
 }

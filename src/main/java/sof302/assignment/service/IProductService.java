@@ -7,4 +7,5 @@ import java.util.List;
 public interface IProductService {
     List<Product> findAll();
     Product findById(Integer id);
+    void deleteProductById(Integer id);
 }
