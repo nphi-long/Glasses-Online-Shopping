@@ -5,9 +5,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2020 at 05:46 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.6
+-- Generation Time: Jul 16, 2020 at 03:00 PM
+-- Server version: 10.4.13-MariaDB
+-- PHP Version: 7.4.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,9 +31,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `bill` (
   `BID` int(11) NOT NULL,
-  `UID` int(11) DEFAULT NULL,
-  `DATE` date DEFAULT NULL,
-  `STATUS` char(1) DEFAULT NULL
+  `USERNAME` varchar(24) NOT NULL,
+  `DATE` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -56,8 +55,8 @@ CREATE TABLE `billdetails` (
 
 CREATE TABLE `product` (
   `PID` int(11) NOT NULL,
-  `NAME` varchar(24) NOT NULL,
-  `TYPE` char(1) DEFAULT NULL,
+  `NAME` varchar(30) NOT NULL,
+  `TYPE` varchar(30) DEFAULT NULL,
   `PRICE` float DEFAULT NULL,
   `QUANTITY` int(11) DEFAULT NULL,
   `IMAGE` varchar(100) DEFAULT NULL,
@@ -69,17 +68,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`PID`, `NAME`, `TYPE`, `PRICE`, `QUANTITY`, `IMAGE`, `DESCRIPTION`) VALUES
-(1, 'Lang 01', 'S', 249, 20, NULL, NULL),
-(2, 'Kalo 032', 'S', 320, 10, NULL, NULL),
-(3, 'MioMio 032', 'S', 280, 5, NULL, NULL),
-(4, 'Liberty D01', 'G', 230, 15, NULL, NULL),
-(5, 'Havana 01', 'G', 330, 18, NULL, NULL),
-(6, 'Dear Classic 02', 'G', 220, 25, NULL, NULL),
-(7, 'Mig B1', 'G', 250, 7, NULL, NULL),
-(8, 'Gogh SV', 'A', 260, 20, NULL, NULL),
-(9, 'RingRing GD', 'A', 170, 12, NULL, NULL),
-(10, 'Fall Ring GD', 'A', 260, 18, NULL, NULL),
-(11, 'Big Fish SV', 'A', 170, 14, NULL, NULL);
+(1, 'LALA BC4', 'SUNGLASSES', 280, 15, NULL, NULL),
+(2, 'KARMA 032', 'SUNGLASSES', 320, 20, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -88,28 +78,23 @@ INSERT INTO `product` (`PID`, `NAME`, `TYPE`, `PRICE`, `QUANTITY`, `IMAGE`, `DES
 --
 
 CREATE TABLE `user` (
-  `UID` int(11) NOT NULL,
   `USERNAME` varchar(24) NOT NULL,
-  `PASSWORD` varchar(10) NOT NULL,
+  `PASSWORD` varchar(24) NOT NULL,
   `ROLE` char(1) NOT NULL,
-  `NAME` varchar(30) DEFAULT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `GENDER` char(1) DEFAULT NULL,
   `PHONE` varchar(15) DEFAULT NULL,
-  `ADDRESS` varchar(100) DEFAULT NULL,
-  `GENDER` char(1) DEFAULT NULL
+  `ADDRESS` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`UID`, `USERNAME`, `PASSWORD`, `ROLE`, `NAME`, `PHONE`, `ADDRESS`, `GENDER`) VALUES
-(1, 'admin', 'admin', 'A', 'Nguyen Phi Long', '0352362540', NULL, NULL),
-(2, 'client', 'client', 'C', 'Nguyen Phi Long', '0352362540', 'Hanoi', 'M'),
-(3, 'nphilong', 'nphilong', 'C', NULL, NULL, NULL, NULL),
-(5, 'client2', 'client', 'C', NULL, NULL, NULL, NULL),
-(7, 'client3', 'a', 'C', 'Nguyễn Phi Long', '0352362540', 'Số nhà 3, Ngõ 296, Lĩnh Nam, Hoàng Mai, Hà Nội', 'F'),
-(8, 'longnp', 'a', 'C', NULL, NULL, NULL, NULL),
-(9, 'khanhnk', 'a', 'C', 'Nguyễn Quốc Khánh', '0352365478', 'Hà Nội', 'M');
+INSERT INTO `user` (`USERNAME`, `PASSWORD`, `ROLE`, `NAME`, `GENDER`, `PHONE`, `ADDRESS`) VALUES
+('admin', 'admin', 'A', NULL, NULL, NULL, NULL),
+('client', 'client', 'C', 'Nguyễn Phi Long', 'M', '0352362540', 'Hà Nội'),
+('dat', '147369', 'C', 'dat', 'M', '0981618097', 'hà nọi');
 
 --
 -- Indexes for dumped tables
@@ -120,13 +105,13 @@ INSERT INTO `user` (`UID`, `USERNAME`, `PASSWORD`, `ROLE`, `NAME`, `PHONE`, `ADD
 --
 ALTER TABLE `bill`
   ADD PRIMARY KEY (`BID`),
-  ADD KEY `UID` (`UID`);
+  ADD KEY `USERNAME` (`USERNAME`);
 
 --
 -- Indexes for table `billdetails`
 --
 ALTER TABLE `billdetails`
-  ADD PRIMARY KEY (`BID`,`PID`),
+  ADD KEY `BID` (`BID`),
   ADD KEY `PID` (`PID`);
 
 --
@@ -139,8 +124,7 @@ ALTER TABLE `product`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`UID`),
-  ADD UNIQUE KEY `USERNAME` (`USERNAME`);
+  ADD PRIMARY KEY (`USERNAME`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -156,13 +140,7 @@ ALTER TABLE `bill`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `PID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `UID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `PID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -172,7 +150,7 @@ ALTER TABLE `user`
 -- Constraints for table `bill`
 --
 ALTER TABLE `bill`
-  ADD CONSTRAINT `bill_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `user` (`UID`);
+  ADD CONSTRAINT `bill_ibfk_2` FOREIGN KEY (`USERNAME`) REFERENCES `user` (`USERNAME`);
 
 --
 -- Constraints for table `billdetails`
